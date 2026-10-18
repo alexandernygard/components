@@ -70,10 +70,16 @@ pnpm build-storybook  # static Storybook in storybook-static/
 
 ## Publish
 
+Pushes to `main` publish automatically (`.github/workflows/publish.yml`). The workflow typechecks and builds every push, and publishes when the version in `package.json` isn't on npm yet. To release:
+
 ```bash
-npm login                # once, as alexandernygard
-pnpm version patch       # or minor / major
-pnpm publish             # runs typecheck and build first
+pnpm version patch       # or minor / major; commits and tags
+git push --follow-tags
 ```
+
+The workflow uses npm trusted publishing, so there's no token to store. It needs a one-time setup, because a trusted publisher can only be added to a package that already exists:
+
+1. Publish the first version by hand: `npm login`, then `pnpm publish`.
+2. On npmjs.com, open the package's Settings → Trusted publishing, choose GitHub Actions, and enter `alexandernygard`, `components` and `publish.yml`.
 
 The package is scoped and `publishConfig.access` is `public`.
