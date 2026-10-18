@@ -38,7 +38,7 @@ Pick the packages and patch, minor or major, and write one sentence for the chan
 
 ```bash
 pnpm version-packages                 # bumps versions, writes each CHANGELOG.md, bumps dependents
-git commit -am "Release" && git push
+git add -A && git commit -m "Release" && git push
 pnpm release                          # typecheck, build, publish what changed (tokens first), tag
 git push --follow-tags
 ```
