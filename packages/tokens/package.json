@@ -1,0 +1,46 @@
+{
+  "name": "@alexandernygard/tokens",
+  "version": "0.1.0",
+  "description": "Alex Nygård's design tokens and fonts for Tailwind 4: colours, type, radius and shadows shared by the React and Svelte component libraries.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Alexander Nygård",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandernygard/components.git",
+    "directory": "packages/tokens"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "index.css",
+    "tokens.css",
+    "fonts.css",
+    "README.md"
+  ],
+  "style": "./index.css",
+  "exports": {
+    ".": {
+      "style": "./index.css",
+      "default": "./index.css"
+    },
+    "./index.css": "./index.css",
+    "./tokens.css": "./tokens.css",
+    "./fonts.css": "./fonts.css",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "design-tokens",
+    "tailwind",
+    "theme",
+    "css"
+  ],
+  "dependencies": {
+    "@alexandernygard/libron": "^0.31.0",
+    "@fontsource-variable/schibsted-grotesk": "^5.3.0"
+  }
+}

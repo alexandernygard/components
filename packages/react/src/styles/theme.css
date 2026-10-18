@@ -1,0 +1,7 @@
+/*
+ * @alexandernygard/components theme: the shared tokens and fonts from
+ * @alexandernygard/tokens, plus the shadcn variants and animations.
+ */
+@import "tw-animate-css";
+@import "./shadcn.css";
+@import "@alexandernygard/tokens";

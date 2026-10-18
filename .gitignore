@@ -4,3 +4,7 @@ storybook-static
 *.log
 .DS_Store
 .playwright-mcp
+.svelte-kit
+vite.config.*.timestamp-*
+.env
+.env.*

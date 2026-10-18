@@ -4,8 +4,14 @@
     {
       "name": "storybook",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["storybook", "--no-open"],
+      "runtimeArgs": ["--filter", "@alexandernygard/components", "storybook", "--no-open"],
       "port": 6006
+    },
+    {
+      "name": "storybook-svelte",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@alexandernygard/components-svelte", "storybook", "--no-open"],
+      "port": 6007
     }
   ]
 }
