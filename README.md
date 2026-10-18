@@ -27,7 +27,7 @@ Then:
 import { Button, Card, CardHeader, CardTitle, TooltipProvider, Toaster } from "@alexandernygard/components"
 ```
 
-Wrap the app in `TooltipProvider` if it uses tooltips, and render `<Toaster />` once if it uses toasts. Dark mode is the `dark` class on `<html>`. Peer dependencies are `react` and `react-dom` 18.3 or 19.
+Wrap the app in `TooltipProvider` if it uses tooltips, and render `<Toaster />` once if it uses toasts. `toast()` is exported too, so there's no need to install sonner. Dark mode is the `dark` class on `<html>`. Peer dependencies are `react` and `react-dom` 18.3 or 19.
 
 Every module is its own file and the package is marked side-effect free, so an app only bundles what it imports. Charts (recharts), syntax highlighting (shiki) and the carousel stay out unless you use them.
 
