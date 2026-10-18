@@ -1,6 +1,6 @@
 {
   "name": "@alexandernygard/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Alex Nygård's design tokens and fonts for Tailwind 4: colours, type, radius and shadows shared by the React and Svelte component libraries.",
   "type": "module",
   "license": "MIT",
