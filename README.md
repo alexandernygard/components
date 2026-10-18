@@ -8,7 +8,7 @@ My component libraries, one theme for React and Svelte.
 | [`@alexandernygard/components-svelte`](packages/svelte) | Svelte 5: shadcn-svelte on Bits UI. For nyggis, portfolio. |
 | [`@alexandernygard/tokens`](packages/tokens) | The shared colours, type, radius, shadows and fonts both libraries use. |
 
-Snow, granite and frost, with one accent colour, cloudberry, for on and selected states. Schibsted Grotesk for the interface and Libron for titles.
+Snow, granite and frost, with one accent colour, cloudberry, for on and selected states. Everything is set in Libron, from `@alexandernygard/libron`.
 
 ## Develop
 

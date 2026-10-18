@@ -80,28 +80,25 @@ export const Typography: Story = {
   render: () => (
     <div className="flex max-w-3xl flex-col gap-12">
       <section className="flex flex-col gap-3">
-        <p className="text-sm text-muted-foreground">Libron, for titles and long reading</p>
+        <p className="text-sm text-muted-foreground">Libron, for titles</p>
         <p className="font-heading text-6xl leading-[1.05]">Some days left in October</p>
         <p className="font-heading text-3xl leading-tight">
           Rent, savings and the flat in Grünerløkka
         </p>
-        <p className="max-w-[62ch] font-serif text-lg leading-relaxed">
-          A serif with open counters and a calm rhythm. It sets card, dialog and sheet titles, and any
-          prose long enough to be read rather than scanned, like help text or an article.
-        </p>
       </section>
       <section className="flex flex-col gap-3">
-        <p className="text-sm text-muted-foreground">Schibsted Grotesk, for the interface</p>
-        <p className="text-4xl font-semibold tracking-tight">Track the work day</p>
-        <p className="text-xl font-medium">Pull requests waiting on you</p>
-        <p className="max-w-[65ch] text-base leading-relaxed">
-          A grotesk drawn for a Norwegian newsroom, so it stays clear at small sizes and in dense
-          layouts. Buttons, labels, menus, tables and body copy all use it.
+        <p className="text-sm text-muted-foreground">Libron, for the interface and reading</p>
+        <p className="text-xl font-bold">Pull requests waiting on you</p>
+        <p className="max-w-[62ch] text-base leading-relaxed">
+          A serif with open counters and a calm rhythm, from @alexandernygard/libron. It sets
+          everything: buttons, labels, menus, tables, body copy and long reading. It comes in
+          regular, italic, bold and bold italic, so medium and semibold weights round to the
+          nearest of those.
         </p>
         <p className="text-sm text-muted-foreground">
           Muted text for supporting detail, kept above 4.5:1 contrast in both themes.
         </p>
-        <p className="text-3xl font-medium tabular-nums">kr 42 318,50</p>
+        <p className="text-3xl tabular-nums">kr 42 318,50</p>
       </section>
       <section className="grid gap-2">
         <p className="text-sm text-muted-foreground">Scale</p>

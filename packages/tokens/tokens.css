@@ -96,7 +96,7 @@
 }
 
 @theme inline {
-  --font-sans: "Schibsted Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Libron", Georgia, "Times New Roman", serif;
   --font-heading: "Libron", Georgia, "Times New Roman", serif;
   --font-serif: "Libron", Georgia, "Times New Roman", serif;
 

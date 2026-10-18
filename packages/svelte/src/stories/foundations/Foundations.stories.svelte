@@ -48,20 +48,19 @@
 <Story name="Typography">
 	<div class="flex max-w-3xl flex-col gap-12">
 		<section class="flex flex-col gap-3">
-			<p class="text-sm text-muted-foreground">Libron, for titles and long reading</p>
+			<p class="text-sm text-muted-foreground">Libron, for titles</p>
 			<p class="font-heading text-6xl leading-[1.05]">Some days left in October</p>
-			<p class="max-w-[62ch] font-serif text-lg leading-relaxed">
-				A serif with open counters and a calm rhythm. It sets card, dialog and sheet titles, and any prose long
-				enough to be read rather than scanned.
-			</p>
+			<p class="font-heading text-3xl leading-tight">Rent, savings and the flat in Grünerløkka</p>
 		</section>
 		<section class="flex flex-col gap-3">
-			<p class="text-sm text-muted-foreground">Schibsted Grotesk, for the interface</p>
-			<p class="text-4xl font-semibold tracking-tight">Track the work day</p>
-			<p class="max-w-[65ch] text-base leading-relaxed">
-				A grotesk drawn for a Norwegian newsroom, so it stays clear at small sizes and in dense layouts.
+			<p class="text-sm text-muted-foreground">Libron, for the interface and reading</p>
+			<p class="text-xl font-bold">Pull requests waiting on you</p>
+			<p class="max-w-[62ch] text-base leading-relaxed">
+				A serif with open counters and a calm rhythm, from @alexandernygard/libron. It sets everything:
+				buttons, labels, menus, tables, body copy and long reading. It comes in regular, italic, bold and bold
+				italic, so medium and semibold weights round to the nearest of those.
 			</p>
-			<p class="text-3xl font-medium tabular-nums">kr 42 318,50</p>
+			<p class="text-3xl tabular-nums">kr 42 318,50</p>
 		</section>
 	</div>
 </Story>

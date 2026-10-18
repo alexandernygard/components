@@ -5,7 +5,7 @@
  * that are on or selected (switches, checks, progress, the active tab, focus)
  * and nothing else, so it keeps meaning something.
  *
- * Schibsted Grotesk sets the interface; Libron sets titles and prose.
+ * Libron sets everything: the interface, titles and prose.
  *
  *   @import "tailwindcss";
  *   @import "@alexandernygard/tokens";

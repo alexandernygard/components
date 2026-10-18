@@ -11,7 +11,7 @@ You normally don't install this directly: both component packages depend on it a
 
 - `index.css`: fonts and tokens.
 - `tokens.css`: CSS variables for light and `.dark`, the Tailwind `@theme inline` mapping (`bg-highlight`, `text-positive`, `font-heading`, ...), radius scale, tinted shadows and base styles.
-- `fonts.css`: Schibsted Grotesk (interface) and Libron (`@alexandernygard/libron`, titles).
+- `fonts.css`: Libron (`@alexandernygard/libron`), used for everything. `font-sans`, `font-serif` and `font-heading` all point to it, so an app can swap any one of them.
 
 Override any token in an app:
 

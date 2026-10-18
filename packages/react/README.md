@@ -36,7 +36,7 @@ Every module is its own file and the package is marked side-effect free, so an a
 ## The look
 
 - **Colours.** Snow `#f5f7f8`, granite `#18212b`, frost `#dde3e8`, and one accent, cloudberry `#f2a922`. Cloudberry only marks on or selected states: checkboxes, switches, radios, sliders, progress, the active tab, pressed toggles, the active sidebar item and the focus ring.
-- **Type.** Schibsted Grotesk for the interface. Libron for titles: cards, dialogs, sheets, drawers, empty states, field legends and questionnaires. Use `font-heading` or `font-serif` for your own.
+- **Type.** Libron, from `@alexandernygard/libron`, for everything. Titles in cards, dialogs, sheets, drawers, empty states, field legends and questionnaires use `font-heading`, so an app can give titles a different face by overriding `--font-heading`.
 - **Shape.** Corners grow with size: 4px for checkboxes, 8px for controls, 12px for cards, 16px for dialogs, fully round for badges and switches. Shadows are layered and tinted with the ink colour.
 - **Status.** `positive`, `warning`, `info` and `destructive` tokens. Badge and Alert have matching variants.
 

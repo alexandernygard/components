@@ -12,6 +12,6 @@ addons.setConfig({
     appBorderColor: "#dde3e8",
     textColor: "#18212b",
     textMutedColor: "#5b6672",
-    fontBase: '"Schibsted Grotesk Variable", ui-sans-serif, system-ui, sans-serif',
+    fontBase: '"Libron", Georgia, "Times New Roman", serif',
   }),
 })

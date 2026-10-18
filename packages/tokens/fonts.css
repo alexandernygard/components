@@ -1,3 +1,2 @@
-/* Schibsted Grotesk (OFL) for the interface, Libron (OFL) for titles and prose. */
-@import "@fontsource-variable/schibsted-grotesk";
+/* Libron (OFL), from @alexandernygard/libron, sets everything: interface, titles and prose. */
 @import "@alexandernygard/libron";
