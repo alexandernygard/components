@@ -131,9 +131,9 @@ export const SliderField: Story = {
           <Label>Savings rate</Label>
           <span className="text-sm tabular-nums text-muted-foreground">{value[0]}%</span>
         </div>
-        <Slider value={value} onValueChange={setValue} max={100} step={1} />
+        <Slider value={value} onValueChange={setValue} max={100} step={1} aria-label="Savings rate" />
         <Label className="mt-4">Price range</Label>
-        <Slider defaultValue={[20, 70]} max={100} />
+        <Slider defaultValue={[20, 70]} max={100} aria-label="Price range" />
       </div>
     )
   },

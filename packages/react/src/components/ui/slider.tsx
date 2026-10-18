@@ -4,12 +4,21 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Slider as SliderPrimitive } from "radix-ui"
 
+// aria-label belongs on the thumbs (role="slider"); on the root nobody reads it.
+// With several thumbs each one also says which end it is.
+function thumbLabel(label: string | undefined, index: number, count: number) {
+  if (!label || count === 1) return label
+  if (count === 2) return `${label}, ${index === 0 ? "minimum" : "maximum"}`
+  return `${label}, value ${index + 1} of ${count}`
+}
+
 function Slider({
   className,
   defaultValue,
   value,
   min = 0,
   max = 100,
+  "aria-label": ariaLabel,
   ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root>) {
   const _values = React.useMemo(
@@ -48,6 +57,7 @@ function Slider({
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
+          aria-label={thumbLabel(ariaLabel, index, _values.length)}
           className="relative block size-3 shrink-0 rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 disabled:pointer-events-none disabled:opacity-50"
         />
       ))}
