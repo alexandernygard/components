@@ -1,6 +1,6 @@
 {
   "name": "@alexandernygard/components",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Alex Nygård's React component library: shadcn/ui + Radix + Tailwind 4, with a cool Nordic theme.",
   "type": "module",
   "license": "MIT",
