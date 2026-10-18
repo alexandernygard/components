@@ -7,8 +7,17 @@
 		value = $bindable(),
 		orientation = "horizontal",
 		class: className,
+		"aria-label": ariaLabel,
 		...restProps
 	}: WithoutChildrenOrChild<SliderPrimitive.RootProps> = $props();
+
+	// aria-label belongs on the thumbs (role="slider"); on the root nobody reads it.
+	// With several thumbs each one also says which end it is.
+	function thumbLabel(label: string | null | undefined, index: number, count: number) {
+		if (!label || count === 1) return label ?? undefined;
+		if (count === 2) return `${label}, ${index === 0 ? "minimum" : "maximum"}`;
+		return `${label}, value ${index + 1} of ${count}`;
+	}
 </script>
 
 <!--
@@ -45,6 +54,7 @@ get along, so we shut typescript up by casting `value` to `never`.
 			<SliderPrimitive.Thumb
 				data-slot="slider-thumb"
 				index={thumb.index}
+				aria-label={thumbLabel(ariaLabel, thumb.index, thumbItems.length)}
 				class="border-ring ring-ring/50 relative size-3 rounded-full border bg-white transition-[color,box-shadow] after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 block shrink-0 select-none disabled:pointer-events-none disabled:opacity-50"
 			/>
 		{/each}

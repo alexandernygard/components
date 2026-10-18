@@ -58,7 +58,9 @@
 <Story name="Slider">
 	<div class="grid w-80 gap-4">
 		<Label>Monthly savings goal</Label>
-		<Slider type="single" value={60} max={100} step={5} />
+		<Slider type="single" value={60} max={100} step={5} aria-label="Monthly savings goal" />
+		<Label class="mt-2">Price range</Label>
+		<Slider type="multiple" value={[20, 70]} max={100} aria-label="Price range" />
 	</div>
 </Story>
 
