@@ -1,0 +1,6 @@
+/* Canvas follows the theme so dark mode previews on the real background. */
+html,
+body,
+#storybook-root {
+  background: var(--background);
+}

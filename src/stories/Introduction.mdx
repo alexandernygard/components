@@ -1,0 +1,62 @@
+import { Meta } from "@storybook/addon-docs/blocks"
+
+<Meta title="Introduction" />
+
+<div className="font-sans text-foreground">
+
+<h1 className="font-heading text-5xl leading-tight">Components</h1>
+
+<p className="max-w-[62ch] text-lg text-muted-foreground">
+  The React components behind Alex Nygård's apps. Built on shadcn/ui and Radix, styled with Tailwind 4,
+  and published as <code>@alexandernygard/components</code>.
+</p>
+
+</div>
+
+## Install
+
+```bash
+pnpm add @alexandernygard/components
+```
+
+In an app that already runs Tailwind 4, import the theme after Tailwind. It brings the tokens and fonts, and tells Tailwind to scan the package for classes:
+
+```css
+@import "tailwindcss";
+@import "@alexandernygard/components/theme.css";
+```
+
+Without Tailwind, import the precompiled stylesheet once instead:
+
+```ts
+import "@alexandernygard/components/styles.css"
+```
+
+Then use the components:
+
+```tsx
+import { Button, Card, CardHeader, CardTitle } from "@alexandernygard/components"
+```
+
+## The look
+
+Snow, granite and frost, plus one colour: **cloudberry**. Cloudberry marks what is on or selected, like a checked box, a switch, the active tab, a progress bar or the focus ring. Nothing else uses it, so it always means the same thing.
+
+Interface text is set in **Schibsted Grotesk**. Titles in cards, dialogs and sheets are set in **Libron**, a serif.
+
+Corners get rounder as things get bigger. Controls are 8px, cards 12px, dialogs 16px, and badges and switches are fully round.
+
+## Dark mode
+
+Add the `dark` class to `<html>`. Use the toolbar above the canvas to switch between themes here.
+
+## Theming in an app
+
+Every colour is a CSS variable, so an app can override one without forking the library:
+
+```css
+:root {
+  --highlight: #3fa36b;
+  --ring: #2f8556;
+}
+```
