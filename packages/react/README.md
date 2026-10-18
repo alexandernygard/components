@@ -74,12 +74,4 @@ pnpm build-storybook  # static Storybook in storybook-static/
 
 ## Publish
 
-Publish from your machine, like `@alexandernygard/libron`. If `packages/tokens` changed, publish it first, since this package depends on it:
-
-```bash
-pnpm version patch       # or minor / major; commits and tags
-git push --follow-tags
-pnpm publish             # typechecks and builds first, then asks you to approve in the browser
-```
-
-The package is scoped and `publishConfig.access` is `public`.
+Releases go through Changesets from the repo root. See [Publish](../../README.md#publish) in the root README.

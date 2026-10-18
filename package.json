@@ -7,6 +7,12 @@
     "dev:svelte": "pnpm --filter @alexandernygard/components-svelte dev",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
-    "build-storybook": "pnpm -r build-storybook"
+    "build-storybook": "pnpm -r build-storybook",
+    "changeset": "changeset",
+    "version-packages": "changeset version && pnpm install --lockfile-only",
+    "release": "pnpm typecheck && pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3"
   }
 }

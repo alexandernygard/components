@@ -21,9 +21,4 @@ Override any token in an app:
 
 ## Publish
 
-```bash
-pnpm version patch
-pnpm publish
-```
-
-Publish this before a component package that needs the new version.
+Releases go through Changesets from the repo root. See [Publish](../../README.md#publish) in the root README.

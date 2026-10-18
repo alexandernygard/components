@@ -24,4 +24,23 @@ Change a token in `packages/tokens` and both libraries pick it up. A styling cha
 
 ## Publish
 
-Each package is published by hand from its folder with `pnpm publish`. Publish `tokens` first when it changed, since the libraries depend on it.
+Releases use [Changesets](https://github.com/changesets/changesets) and are published from your machine.
+
+**With each change**, record what changed:
+
+```bash
+pnpm changeset
+```
+
+Pick the packages and patch, minor or major, and write one sentence for the changelog. Commit the generated file in `.changeset/` along with the change. If you change `packages/tokens`, select the component packages too, because their precompiled `styles.css` includes the tokens.
+
+**To release:**
+
+```bash
+pnpm version-packages                 # bumps versions, writes each CHANGELOG.md, bumps dependents
+git commit -am "Release" && git push
+pnpm release                          # typecheck, build, publish what changed (tokens first), tag
+git push --follow-tags
+```
+
+`pnpm release` asks you to approve each package in the browser. Only packages whose new version isn't on npm yet are published, and tags look like `@alexandernygard/tokens@0.1.1`. `pnpm changeset status` shows what the next release will contain.

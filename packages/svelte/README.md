@@ -70,10 +70,4 @@ pnpm build-storybook
 
 ## Publish
 
-From your machine. Publish `packages/tokens` first if it changed:
-
-```bash
-pnpm version patch
-git push --follow-tags
-pnpm publish
-```
+Releases go through Changesets from the repo root. See [Publish](../../README.md#publish) in the root README.
