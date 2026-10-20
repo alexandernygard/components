@@ -1,5 +1,12 @@
 # @alexandernygard/components
 
+## 0.2.0
+
+### Minor Changes
+
+- 39b5a6b: Add Markdown (GFM, safe for model output, closes half-written syntax while streaming, code blocks use CodeBlock), PromptInput (Enter sends, grows with its text, stop button while a reply streams, attach, paste or drop files), ResizableSidebar with a trigger, a keyboard shortcut and saved sizes, a useHotkeys hook with KbdShortcut to display shortcuts, and PortalProvider to render overlays inside a scaled container or iframe. InputGroup no longer dims when only a button inside it is disabled.
+- 39b5a6b: recharts is now a peer dependency (^3.8.0) instead of a pinned dependency, so an app's own recharts is used and chart types no longer clash. pnpm installs it automatically; with npm or yarn, add recharts to the app.
+
 ## 0.1.4
 
 ### Patch Changes
