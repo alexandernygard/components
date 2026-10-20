@@ -1,5 +1,11 @@
 # @alexandernygard/components-svelte
 
+## 0.2.1
+
+### Patch Changes
+
+- Re-release of 0.2.0, which got stuck on npm and was never published. No code changes.
+
 ## 0.2.0
 
 ### Minor Changes
