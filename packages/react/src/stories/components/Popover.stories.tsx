@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import * as React from "react"
 import { CalendarDaysIcon, InfoIcon } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/popover"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Kbd } from "@/components/ui/kbd"
+import { PortalProvider } from "@/components/ui/portal-provider"
 
 const meta = {
   title: "Components/Popover and tooltip",
@@ -100,4 +102,29 @@ export const HoverCardStory: Story = {
       </HoverCardContent>
     </HoverCard>
   ),
+}
+
+export const PortalInsideAScaledStage: Story = {
+  name: "Overlays inside a scaled stage",
+  render: function Render() {
+    const [stage, setStage] = React.useState<HTMLDivElement | null>(null)
+
+    return (
+      <div className="h-80 w-[40rem] overflow-hidden rounded-xl border bg-muted">
+        <div
+          ref={setStage}
+          className="relative h-[40rem] w-[80rem] origin-top-left scale-50 bg-background p-16"
+        >
+          <PortalProvider container={stage}>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button size="lg">Open a popover on the stage</Button>
+              </PopoverTrigger>
+              <PopoverContent>Rendered inside the scaled stage, so it scales with it.</PopoverContent>
+            </Popover>
+          </PortalProvider>
+        </div>
+      </div>
+    )
+  },
 }

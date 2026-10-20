@@ -10,10 +10,15 @@
 	import { Input } from "$lib/components/ui/input/index.js";
 	import { Label } from "$lib/components/ui/label/index.js";
 	import * as Popover from "$lib/components/ui/popover/index.js";
+	import { PortalProvider } from "$lib/components/ui/portal-provider/index.js";
 	import * as Sheet from "$lib/components/ui/sheet/index.js";
 	import * as Tooltip from "$lib/components/ui/tooltip/index.js";
 
 	const { Story } = defineMeta({ title: "Components/Overlays" });
+</script>
+
+<script lang="ts">
+	let stage = $state<HTMLDivElement | null>(null);
 </script>
 
 <Story name="Dialog">
@@ -138,4 +143,17 @@
 			<Tooltip.Content>Three months of fixed costs</Tooltip.Content>
 		</Tooltip.Root>
 	</Tooltip.Provider>
+</Story>
+
+<Story name="Inside a scaled stage">
+	<div class="h-80 w-[40rem] overflow-hidden rounded-xl border bg-muted">
+		<div bind:this={stage} class="relative h-[40rem] w-[80rem] origin-top-left scale-50 bg-background p-16">
+			<PortalProvider container={stage}>
+				<Popover.Root>
+					<Popover.Trigger class={buttonVariants({ size: "lg" })}>Open a popover on the stage</Popover.Trigger>
+					<Popover.Content>Rendered inside the scaled stage, so it scales with it.</Popover.Content>
+				</Popover.Root>
+			</PortalProvider>
+		</div>
+	</div>
 </Story>

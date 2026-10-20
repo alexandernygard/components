@@ -11,6 +11,7 @@ const lines = [
   'export * from "./lib/utils"',
   'export * from "./hooks/use-mobile"',
   'export * from "./hooks/use-highlighted-code"',
+  'export * from "./hooks/use-hotkeys"',
   ...ui.map((name) => `export * from "./components/ui/${name}"`),
 ]
 writeFileSync(new URL("../src/index.ts", import.meta.url), lines.join("\n") + "\n")

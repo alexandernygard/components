@@ -6,4 +6,5 @@
 export * from "./utils.js";
 export * from "./hooks/is-mobile.svelte.js";
 export * from "./hooks/use-highlighted-code.svelte.js";
+export * from "./hooks/use-hotkeys.svelte.js";
 export * from "./highlighter.js";

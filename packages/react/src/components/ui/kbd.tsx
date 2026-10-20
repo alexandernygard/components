@@ -1,4 +1,6 @@
+import * as React from "react"
 import { cn } from "@/lib/utils"
+import { formatHotkey, isApple } from "@/lib/hotkeys"
 
 function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
@@ -23,4 +25,24 @@ function KbdGroup({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export { Kbd, KbdGroup }
+const subscribe = () => () => {}
+
+// A shortcut such as "mod+k", printed as ⌘ K on Apple devices and Ctrl K
+// elsewhere. Takes the same format as useHotkeys.
+function KbdShortcut({
+  keys,
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof KbdGroup>, "children"> & { keys: string }) {
+  const apple = React.useSyncExternalStore(subscribe, isApple, () => false)
+
+  return (
+    <KbdGroup data-slot="kbd-shortcut" className={className} {...props}>
+      {formatHotkey(keys, apple).map((key, index) => (
+        <Kbd key={index}>{key}</Kbd>
+      ))}
+    </KbdGroup>
+  )
+}
+
+export { Kbd, KbdGroup, KbdShortcut }
