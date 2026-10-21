@@ -71,6 +71,7 @@
     "vite-plugin-dts": "^5.1.2"
   },
   "dependencies": {
+    "@alexandernygard/illustrations": "^0.1.0",
     "@alexandernygard/tokens": "workspace:^",
     "@base-ui/react": "^1.9.0",
     "@shadcn/react": "^0.3.1",

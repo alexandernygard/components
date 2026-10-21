@@ -14,6 +14,9 @@ importers:
 
   packages/react:
     dependencies:
+      '@alexandernygard/illustrations':
+        specifier: ^0.1.0
+        version: 0.1.0
       '@alexandernygard/tokens':
         specifier: workspace:^
         version: link:../tokens
@@ -132,6 +135,9 @@ importers:
 
   packages/svelte:
     dependencies:
+      '@alexandernygard/illustrations':
+        specifier: ^0.1.0
+        version: 0.1.0
       '@alexandernygard/tokens':
         specifier: workspace:^
         version: link:../tokens
@@ -246,6 +252,9 @@ packages:
 
   '@adobe/css-tools@4.5.0':
     resolution: {integrity: sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q==}
+
+  '@alexandernygard/illustrations@0.1.0':
+    resolution: {integrity: sha512-XgbdpV/bVIix94x4Ptx4Z//ztziQRRsPaFHyWdg/bAf+1C9zRFUSIXfViLjgrWvEsERqy9deLYz2S3tT6mPVhw==}
 
   '@alexandernygard/libron@0.31.0':
     resolution: {integrity: sha512-6SjSvRhCe8jCb/rCAnS4dF1k84jL5hFC17EQ/WtBLHrX7M1zmRmCdrg3Al3wPLKps0ORoK327uSVBCan9FxIVQ==}
@@ -3948,6 +3957,8 @@ packages:
 snapshots:
 
   '@adobe/css-tools@4.5.0': {}
+
+  '@alexandernygard/illustrations@0.1.0': {}
 
   '@alexandernygard/libron@0.31.0': {}
 

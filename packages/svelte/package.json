@@ -80,6 +80,7 @@
 		"access": "public"
 	},
 	"dependencies": {
+		"@alexandernygard/illustrations": "^0.1.0",
 		"@alexandernygard/tokens": "workspace:^",
 		"@internationalized/date": "^3.12.0",
 		"@lucide/svelte": "^1.59.0",
