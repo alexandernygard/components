@@ -635,3 +635,33 @@
     -webkit-text-fill-color: currentColor;
   }
 }
+
+/* Touch screens get bigger targets; a mouse keeps the dense desktop sizes.
+   Unlayered so it beats h-7 and min-w-7 from variants and app classes alike;
+   buttons are matched by data-variant because a TooltipTrigger or other asChild
+   wrapper replaces their data-slot. `coarse:` does the same for an app's own controls. */
+@custom-variant coarse (@media (pointer: coarse));
+
+@media (pointer: coarse) {
+  :where(button, a)[data-variant][data-size],
+  :where([data-slot="toggle"], [data-slot="select-trigger"], [data-slot="tabs-trigger"]),
+  :where(
+    [data-slot="dropdown-menu-item"],
+    [data-slot="dropdown-menu-sub-trigger"],
+    [data-slot="dropdown-menu-checkbox-item"],
+    [data-slot="dropdown-menu-radio-item"],
+    [data-slot="context-menu-item"],
+    [data-slot="menubar-item"],
+    [data-slot="select-item"]
+  ) {
+    min-height: 2.5rem;
+  }
+  :where(button, a)[data-variant][data-size^="icon"],
+  :where([data-slot="toggle"], [data-slot="toggle-group-item"]) {
+    min-width: 2.5rem;
+  }
+  /* iOS zooms the page into any field under 16px when it gets focus. */
+  :where([data-slot="input"], [data-slot="textarea"], [data-slot="native-select"]) {
+    font-size: max(16px, 1em);
+  }
+}

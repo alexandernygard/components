@@ -6,7 +6,15 @@ import * as ResizablePrimitive from "react-resizable-panels"
 import { PanelLeftIcon, PanelRightIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
 import { useHotkeys } from "@/hooks/use-hotkeys"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 type ResizableSidebarState = {
   open: boolean
@@ -139,17 +147,21 @@ function ResizablePanel({ ...props }: ResizablePrimitive.PanelProps) {
 
 // A working panel, such as an inspector or a chat, that resizes, snaps shut
 // when dragged below its minimum size and opens and closes from a trigger or
-// a shortcut. Give each one in a group its own id.
+// a shortcut. Give each one in a group its own id. On a phone it leaves the
+// group and opens as a sheet over the page instead, shut until it's asked for.
 function ResizableSidebar({
   id = "sidebar",
   open: openProp,
   defaultOpen = true,
   onOpenChange,
   shortcut,
+  side = "start",
+  title = "Sidebar",
   defaultSize = "25%",
   minSize = "12rem",
   collapsedSize = 0,
   className,
+  children,
   ...props
 }: Omit<ResizablePrimitive.PanelProps, "id" | "collapsible" | "panelRef"> & {
   id?: string
@@ -158,7 +170,13 @@ function ResizableSidebar({
   onOpenChange?: (open: boolean) => void
   /** A shortcut that toggles the sidebar, such as "mod+b". */
   shortcut?: string
+  /** Which edge the sidebar is on, so the sheet slides in from there on a phone. */
+  side?: "start" | "end"
+  /** Names the sheet for screen readers on a phone. */
+  title?: string
 }) {
+  const isMobile = useIsMobile()
+  const [openMobile, setOpenMobile] = React.useState(false)
   const panelRef = ResizablePrimitive.usePanelRef()
   const context = React.useContext(ResizableSidebarContext)
   const subscribe = React.useContext(ResizableLayoutContext)
@@ -215,13 +233,41 @@ function ResizableSidebar({
     return subscribe?.(sync)
   }, [panelRef, setOpen, subscribe])
 
+  const toggleMobile = React.useCallback(() => setOpenMobile((o) => !o), [])
+
   React.useEffect(() => {
-    register?.(id, { open, setOpen, toggle })
-  }, [register, id, open, setOpen, toggle])
+    register?.(
+      id,
+      isMobile
+        ? { open: openMobile, setOpen: setOpenMobile, toggle: toggleMobile }
+        : { open, setOpen, toggle }
+    )
+  }, [register, id, isMobile, openMobile, toggleMobile, open, setOpen, toggle])
 
   React.useEffect(() => () => register?.(id, null), [register, id])
 
-  useHotkeys(shortcut ?? "", toggle, { enabled: !!shortcut })
+  useHotkeys(shortcut ?? "", isMobile ? toggleMobile : toggle, {
+    enabled: !!shortcut,
+  })
+
+  if (isMobile) {
+    return (
+      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+        <SheetContent
+          data-slot="resizable-sidebar"
+          data-mobile="true"
+          side={side === "end" ? "right" : "left"}
+          className={cn("gap-0 p-0 data-[side=left]:w-[88vw] data-[side=right]:w-[88vw] sm:max-w-sm", className)}
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>{title}</SheetTitle>
+            <SheetDescription>{title}</SheetDescription>
+          </SheetHeader>
+          <div className="flex h-full min-h-0 flex-col">{children}</div>
+        </SheetContent>
+      </Sheet>
+    )
+  }
 
   return (
     <ResizablePrimitive.Panel
@@ -236,7 +282,9 @@ function ResizableSidebar({
       // A sidebar collapsed to nothing is hidden, so its controls can't be tabbed to.
       className={cn(!open && !parseFloat(String(collapsedSize)) && "invisible", className)}
       {...props}
-    />
+    >
+      {children}
+    </ResizablePrimitive.Panel>
   )
 }
 
