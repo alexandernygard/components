@@ -1,6 +1,6 @@
 {
 	"name": "@alexandernygard/components-svelte",
-	"version": "0.2.1",
+	"version": "0.3.0",
 	"description": "Alex Nygård's Svelte component library: shadcn-svelte + Bits UI + Tailwind 4, with the same theme as @alexandernygard/components.",
 	"type": "module",
 	"license": "MIT",

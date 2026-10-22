@@ -1,5 +1,11 @@
 # @alexandernygard/components-svelte
 
+## 0.3.0
+
+### Minor Changes
+
+- 73ec7ba: Add Illustration: generative art from @alexandernygard/illustrations that follows dark mode, for empty states, heroes and covers.
+
 ## 0.2.1
 
 ### Patch Changes
