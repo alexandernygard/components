@@ -1,0 +1,7 @@
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "components-svelte-storybook",
+	"compatibility_date": "2026-10-01",
+	"assets": { "directory": "./storybook-static" },
+	"routes": [{ "pattern": "components-svelte.nyggis.com", "custom_domain": true }]
+}

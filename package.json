@@ -2,6 +2,7 @@
   "name": "components-workspace",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@12.14.0",
   "scripts": {
     "dev": "pnpm --filter @alexandernygard/components dev",
     "dev:svelte": "pnpm --filter @alexandernygard/components-svelte dev",
@@ -13,6 +14,7 @@
     "release": "pnpm typecheck && pnpm build && changeset publish"
   },
   "devDependencies": {
-    "@changesets/cli": "^3.0.3"
+    "@changesets/cli": "^3.0.3",
+    "wrangler": "^4.152.0"
   }
 }
