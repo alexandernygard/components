@@ -2,7 +2,15 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { CheckIcon, CopyIcon } from "lucide-react"
+import {
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CopyIcon,
+  GitBranchIcon,
+  PencilIcon,
+  RefreshCwIcon,
+} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -182,6 +190,154 @@ function MessageCopyAction({
   )
 }
 
+// The usual actions, each with its icon, label and tooltip.
+function MessageEditAction({ children, ...props }: React.ComponentProps<typeof MessageAction>) {
+  return (
+    <MessageAction data-slot="message-edit-action" aria-label="Edit" tooltip="Edit" {...props}>
+      {children ?? <PencilIcon />}
+    </MessageAction>
+  )
+}
+
+function MessageRetryAction({ children, ...props }: React.ComponentProps<typeof MessageAction>) {
+  return (
+    <MessageAction data-slot="message-retry-action" aria-label="Retry" tooltip="Retry" {...props}>
+      {children ?? <RefreshCwIcon />}
+    </MessageAction>
+  )
+}
+
+// Starts a new conversation that ends at this message.
+function MessageForkAction({ children, ...props }: React.ComponentProps<typeof MessageAction>) {
+  return (
+    <MessageAction
+      data-slot="message-fork-action"
+      aria-label="Fork from here"
+      tooltip="Fork from here"
+      {...props}
+    >
+      {children ?? <GitBranchIcon />}
+    </MessageAction>
+  )
+}
+
+// "2 / 3" with arrows, for a message that was edited or regenerated. `index`
+// counts from 0. Renders nothing while there is only one version.
+function MessageVersions({
+  index,
+  total,
+  onIndexChange,
+  className,
+  ...props
+}: Omit<React.ComponentProps<"div">, "onChange"> & {
+  index: number
+  total: number
+  onIndexChange: (index: number) => void
+}) {
+  if (total < 2) {
+    return null
+  }
+
+  return (
+    <div
+      data-slot="message-versions"
+      role="group"
+      aria-label="Versions"
+      className={cn("flex items-center", className)}
+      {...props}
+    >
+      <MessageAction
+        aria-label="Previous version"
+        disabled={index <= 0}
+        onClick={() => onIndexChange(index - 1)}
+      >
+        <ChevronLeftIcon />
+      </MessageAction>
+      <span className="min-w-8 text-center text-xs text-muted-foreground tabular-nums" aria-live="polite">
+        <span className="sr-only">Version </span>
+        {index + 1} / {total}
+      </span>
+      <MessageAction
+        aria-label="Next version"
+        disabled={index >= total - 1}
+        onClick={() => onIndexChange(index + 1)}
+      >
+        <ChevronRightIcon />
+      </MessageAction>
+    </div>
+  )
+}
+
+// Edits a message in place. Enter saves, Shift+Enter adds a line and Escape
+// cancels. Saving is off while the text is empty or unchanged.
+function MessageEditor({
+  defaultValue = "",
+  onSave,
+  onCancel,
+  saveLabel = "Save",
+  placeholder,
+  className,
+  ...props
+}: Omit<React.ComponentProps<"form">, "onSubmit" | "defaultValue"> & {
+  defaultValue?: string
+  onSave: (text: string) => void
+  onCancel: () => void
+  saveLabel?: React.ReactNode
+  placeholder?: string
+}) {
+  const [value, setValue] = React.useState(defaultValue)
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
+  const canSave = value.trim() !== "" && value !== defaultValue
+
+  React.useEffect(() => {
+    const el = textareaRef.current
+    if (!el) return
+    el.focus()
+    el.setSelectionRange(el.value.length, el.value.length)
+  }, [])
+
+  return (
+    <form
+      data-slot="message-editor"
+      className={cn(
+        "flex w-full flex-col gap-2 rounded-2xl border bg-card p-3 shadow-sm transition-[border-color,box-shadow] focus-within:border-foreground/25 focus-within:shadow-md",
+        className
+      )}
+      onSubmit={(event) => {
+        event.preventDefault()
+        if (canSave) onSave(value)
+      }}
+      {...props}
+    >
+      <textarea
+        ref={textareaRef}
+        aria-label="Edit message"
+        value={value}
+        placeholder={placeholder}
+        onChange={(event) => setValue(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault()
+            onCancel()
+          } else if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+            event.preventDefault()
+            event.currentTarget.form?.requestSubmit()
+          }
+        }}
+        className="field-sizing-content max-h-80 min-h-12 w-full resize-none bg-transparent px-1 text-base outline-none placeholder:text-muted-foreground md:text-[0.9375rem]"
+      />
+      <div className="flex justify-end gap-2">
+        <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button type="submit" size="sm" disabled={!canSave}>
+          {saveLabel}
+        </Button>
+      </div>
+    </form>
+  )
+}
+
 export {
   MessageGroup,
   Message,
@@ -192,4 +348,9 @@ export {
   MessageActions,
   MessageAction,
   MessageCopyAction,
+  MessageEditAction,
+  MessageRetryAction,
+  MessageForkAction,
+  MessageVersions,
+  MessageEditor,
 }

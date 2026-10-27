@@ -2,11 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import * as React from "react"
 import { expect, fn, userEvent, waitFor, within } from "storybook/test"
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
   FileSpreadsheetIcon,
   FileTextIcon,
-  PencilIcon,
   RefreshCwIcon,
   SparklesIcon,
   ThumbsDownIcon,
@@ -34,19 +31,25 @@ import {
   MessageAvatar,
   MessageContent,
   MessageCopyAction,
+  MessageEditAction,
+  MessageEditor,
   MessageFooter,
+  MessageForkAction,
   MessageHeader,
+  MessageRetryAction,
+  MessageVersions,
 } from "@/components/ui/message"
 import { Spinner } from "@/components/ui/spinner"
 import { ToolCallLine } from "@/components/ui/tool-call"
 import { Trace, TraceDescription, TraceIcon, TraceTitle } from "@/components/ui/trace"
 
 import { longReply, longWord, markdownReply, unbrokenText, useStreamedText } from "./fixtures"
+import { typeText } from "./test-utils"
 
 const meta = {
   title: "Chat/Messages",
   parameters: { layout: "padded" },
-  args: { onRetry: fn() },
+  args: { onRetry: fn(), onEdit: fn(), onFork: fn() },
   decorators: [
     (Story) => (
       <div className="mx-auto flex max-w-2xl flex-col gap-6">
@@ -54,7 +57,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<{ onRetry: () => void }>
+} satisfies Meta<{ onRetry: () => void; onEdit: (text: string) => void; onFork: (messageId: string) => void }>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -130,9 +133,7 @@ function ReplyActions({
       >
         <ThumbsDownIcon className={vote === "down" ? "fill-current" : undefined} />
       </MessageAction>
-      <MessageAction tooltip="Retry" aria-label="Retry" onClick={onRetry}>
-        <RefreshCwIcon />
-      </MessageAction>
+      <MessageRetryAction onClick={onRetry} />
     </MessageActions>
   )
 }
@@ -161,7 +162,6 @@ export const RichMarkdown: Story = {
 }
 
 export const Actions: Story = {
-  name: "Actions on hover",
   render: () => (
     <>
       <p className="text-xs text-muted-foreground">
@@ -173,9 +173,7 @@ export const Actions: Story = {
         footer={
           <MessageActions visibility="hover">
             <MessageCopyAction text="A user message can have actions too" />
-            <MessageAction tooltip="Edit" aria-label="Edit">
-              <PencilIcon />
-            </MessageAction>
+            <MessageEditAction />
           </MessageActions>
         }
       >
@@ -200,20 +198,9 @@ export const Branches: Story = {
         <MessageContent>
           <Markdown className="text-[0.9375rem]">{replies[index]}</Markdown>
           <MessageActions>
-            <MessageAction aria-label="Previous reply" disabled={index === 0} onClick={() => setIndex((i) => i - 1)}>
-              <ChevronLeftIcon />
-            </MessageAction>
-            <span className="px-0.5 text-xs text-muted-foreground tabular-nums" aria-live="polite">
-              {index + 1} / {replies.length}
-            </span>
-            <MessageAction
-              aria-label="Next reply"
-              disabled={index === replies.length - 1}
-              onClick={() => setIndex((i) => i + 1)}
-            >
-              <ChevronRightIcon />
-            </MessageAction>
+            <MessageVersions index={index} total={replies.length} onIndexChange={setIndex} />
             <MessageCopyAction text={replies[index]} />
+            <MessageRetryAction />
           </MessageActions>
         </MessageContent>
       </Message>
@@ -221,12 +208,179 @@ export const Branches: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    await expect(canvas.getByRole("button", { name: "Previous reply" })).toBeDisabled()
-    await userEvent.click(canvas.getByRole("button", { name: "Next reply" }))
-    await expect(canvas.getByText("2 / 3")).toBeVisible()
+    await expect(canvas.getByRole("button", { name: "Previous version" })).toBeDisabled()
+    await userEvent.click(canvas.getByRole("button", { name: "Next version" }))
+    await expect(canvas.getByText(/2 \/ 3/)).toBeVisible()
     await expect(canvas.getByText(/second take/)).toBeVisible()
+    await userEvent.click(canvas.getByRole("button", { name: "Next version" }))
+    await expect(canvas.getByRole("button", { name: "Next version" })).toBeDisabled()
   },
 }
+
+// ---------------------------------------------------------------------------
+// Editing and forking
+
+export const EditingMessage: Story = {
+  name: "Editing a message",
+  render: () => (
+    <>
+      <Message align="end">
+        <MessageContent>
+          <MessageEditor
+            defaultValue="How much did I spend on eating out in September?"
+            onSave={() => {}}
+            onCancel={() => {}}
+          />
+        </MessageContent>
+      </Message>
+      <AssistantMessage text="**kr 1 600** across 11 purchases." />
+    </>
+  ),
+}
+
+export const EditingLongMessage: Story = {
+  name: "Editing a long message",
+  render: () => (
+    <Message align="end">
+      <MessageContent>
+        <MessageEditor defaultValue={longReply} onSave={() => {}} onCancel={() => {}} />
+      </MessageContent>
+    </Message>
+  ),
+}
+
+type Version = { text: string; reply: string }
+
+// A user message you can edit. Each edit is a new version with its own reply.
+function EditableTurn({
+  initial = [{ text: "How much did I spend on eating out in September?", reply: "**kr 1 600** across 11 purchases." }],
+  onEdit,
+  onFork,
+}: {
+  initial?: Version[]
+  onEdit?: (text: string) => void
+  onFork?: (messageId: string) => void
+}) {
+  const [versions, setVersions] = React.useState(initial)
+  const [index, setIndex] = React.useState(initial.length - 1)
+  const [editing, setEditing] = React.useState(false)
+  const current = versions[index]
+
+  return (
+    <>
+      <Message align="end">
+        <MessageContent>
+          {editing ? (
+            <MessageEditor
+              defaultValue={current.text}
+              onCancel={() => setEditing(false)}
+              onSave={(text) => {
+                setVersions((list) => [...list, { text, reply: `A new answer for “${text}”.` }])
+                setIndex(versions.length)
+                setEditing(false)
+                onEdit?.(text)
+              }}
+            />
+          ) : (
+            <>
+              <Bubble variant="muted">
+                <BubbleContent className="rounded-2xl px-4 py-2.5 text-[0.9375rem] whitespace-pre-wrap">
+                  {current.text}
+                </BubbleContent>
+              </Bubble>
+              <MessageActions visibility={versions.length > 1 ? "always" : "hover"}>
+                <MessageVersions index={index} total={versions.length} onIndexChange={setIndex} />
+                <MessageCopyAction text={current.text} />
+                <MessageEditAction onClick={() => setEditing(true)} />
+              </MessageActions>
+            </>
+          )}
+        </MessageContent>
+      </Message>
+      <Message>
+        <MessageContent>
+          <Markdown className="text-[0.9375rem]">{current.reply}</Markdown>
+          <MessageActions>
+            <MessageCopyAction text={current.reply} />
+            <MessageRetryAction />
+            <MessageForkAction onClick={() => onFork?.(`reply-${index}`)} />
+          </MessageActions>
+        </MessageContent>
+      </Message>
+    </>
+  )
+}
+
+/** Edit makes a new version of the message and its reply. The arrows move between them. */
+export const EditedVersions: Story = {
+  name: "Edited message with versions",
+  render: (args) => (
+    <EditableTurn
+      onFork={args.onFork}
+      initial={[
+        { text: "How much did I spend on eating out?", reply: "Which month do you mean?" },
+        { text: "How much did I spend on eating out in September?", reply: "**kr 1 600** across 11 purchases." },
+      ]}
+    />
+  ),
+}
+
+export const EditMessage: Story = {
+  name: "Test: edit a message",
+  tags: ["test"],
+  render: (args) => <EditableTurn onEdit={args.onEdit} onFork={args.onFork} />,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.queryByRole("group", { name: "Versions" })).toBeNull()
+    await userEvent.click(canvas.getByRole("button", { name: "Edit" }))
+
+    const editor = canvas.getByRole("textbox", { name: "Edit message" }) as HTMLTextAreaElement
+    await expect(editor).toHaveFocus()
+    await expect(canvas.getByRole("button", { name: "Save" })).toBeDisabled()
+
+    typeText(editor, " And August?")
+    await expect(canvas.getByRole("button", { name: "Save" })).toBeEnabled()
+    await userEvent.keyboard("{Enter}")
+
+    await expect(args.onEdit).toHaveBeenCalledWith("How much did I spend on eating out in September? And August?")
+    await expect(canvas.getByText(/2 \/ 2/)).toBeVisible()
+    await expect(canvas.getByText(/A new answer for/)).toBeVisible()
+
+    await userEvent.click(canvas.getByRole("button", { name: "Previous version" }))
+    await expect(canvas.getByText("How much did I spend on eating out in September?")).toBeVisible()
+    await expect(canvas.getByText("kr 1 600")).toBeVisible()
+  },
+}
+
+export const EditCancel: Story = {
+  name: "Test: cancel an edit",
+  tags: ["test"],
+  render: (args) => <EditableTurn onEdit={args.onEdit} />,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole("button", { name: "Edit" }))
+    typeText(canvas.getByRole("textbox", { name: "Edit message" }) as HTMLTextAreaElement, " Never mind")
+    await userEvent.keyboard("{Escape}")
+    await expect(canvas.queryByRole("textbox", { name: "Edit message" })).toBeNull()
+
+    await userEvent.click(canvas.getByRole("button", { name: "Edit" }))
+    const editor = canvas.getByRole("textbox", { name: "Edit message" }) as HTMLTextAreaElement
+    await expect(editor.value).toBe("How much did I spend on eating out in September?")
+    await userEvent.click(canvas.getByRole("button", { name: "Cancel" }))
+    await expect(args.onEdit).not.toHaveBeenCalled()
+  },
+}
+
+export const ForkFromMessage: Story = {
+  name: "Test: fork from a reply",
+  tags: ["test"],
+  render: (args) => <EditableTurn onFork={args.onFork} />,
+  play: async ({ canvasElement, args }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "Fork from here" }))
+    await expect(args.onFork).toHaveBeenCalledWith("reply-0")
+  },
+}
+
 
 // ---------------------------------------------------------------------------
 // States
