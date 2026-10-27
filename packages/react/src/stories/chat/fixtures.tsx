@@ -20,6 +20,7 @@ import {
 
 import {
   ContextUsage,
+  ContextUsageBreakdown,
   ContextUsageContent,
   ContextUsageRow,
   ContextUsageRows,
@@ -205,15 +206,21 @@ export function DemoUsage({
   showLabel?: boolean
 }) {
   return (
-    <ContextUsage used={used} limit={limit}>
+    <ContextUsage
+      used={used}
+      limit={limit}
+      compactAt={0.8}
+      segments={[
+        { label: "Messages", tokens: Math.round(used * 0.62) },
+        { label: "Tools", tokens: Math.round(used * 0.24) },
+        { label: "System prompt", tokens: Math.round(used * 0.07) },
+        { label: "Files", tokens: used - Math.round(used * 0.62) - Math.round(used * 0.24) - Math.round(used * 0.07) },
+      ]}
+    >
       <ContextUsageTrigger showLabel={showLabel} />
       <ContextUsageContent>
-        <ContextUsageSummary />
-        <ContextUsageRows>
-          <ContextUsageRow label="Messages">{Math.round(used * 0.62).toLocaleString("en")}</ContextUsageRow>
-          <ContextUsageRow label="Tools and files">{Math.round(used * 0.31).toLocaleString("en")}</ContextUsageRow>
-          <ContextUsageRow label="System prompt">{Math.round(used * 0.07).toLocaleString("en")}</ContextUsageRow>
-        </ContextUsageRows>
+        <ContextUsageSummary title="Context" />
+        <ContextUsageBreakdown />
         <ContextUsageRows>
           <ContextUsageRow label="Session cost">$1.84</ContextUsageRow>
           <ContextUsageRow label="Weekly limit">38% used</ContextUsageRow>

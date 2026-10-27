@@ -69,6 +69,6 @@ export const ContextUsageOpen: Story = {
   ),
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole("button", { name: "Context: 42% used" }))
-    await expect(await screen.findByText("84.2k of 200k tokens")).toBeInTheDocument()
+    await expect(await screen.findByText("84.2k / 200k")).toBeInTheDocument()
   },
 }
