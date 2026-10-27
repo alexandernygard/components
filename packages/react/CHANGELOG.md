@@ -1,5 +1,15 @@
 # @alexandernygard/components
 
+## 0.5.0
+
+### Minor Changes
+
+- 4e1fd77: Add `SessionList` for a sidebar or history of conversations, with groups by date (`groupSessionsByDate`), statuses, a hover menu, inline rename, empty and loading states. Add `MessageEditor` for editing a message in place, `MessageVersions` for switching between edited or regenerated versions, and `MessageEditAction`, `MessageRetryAction` and `MessageForkAction`.
+
+### Patch Changes
+
+- 121ec5f: `DialogContent` gives its grid one `minmax(0,1fr)` column, so a child that won't wrap (like a truncated title in a flex row) no longer pushes the content past the dialog's max width.
+
 ## 0.4.0
 
 ### Minor Changes

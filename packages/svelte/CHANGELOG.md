@@ -1,5 +1,11 @@
 # @alexandernygard/components-svelte
 
+## 0.4.1
+
+### Patch Changes
+
+- 121ec5f: `DialogContent` gives its grid one `minmax(0,1fr)` column, so a child that won't wrap (like a truncated title in a flex row) no longer pushes the content past the dialog's max width.
+
 ## 0.4.0
 
 ### Minor Changes
