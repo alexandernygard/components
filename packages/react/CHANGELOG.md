@@ -1,5 +1,16 @@
 # @alexandernygard/components
 
+## 0.4.0
+
+### Minor Changes
+
+- d8605b9: Restyle PromptInput as a Claude-style composer and add PromptInputActionMenu ("+" menu with Add files, ⌘U), PromptInputCommands (slash commands), PromptInputButton, PromptInputSpacer, PromptInputBar and per-file upload states. New ModelPicker and ContextUsage components, and MessageActions, MessageAction and MessageCopyAction for copy, retry and feedback under messages.
+- 8e43c3f: Add Tool call, Tool value and Tool views for assistant tool calls. ToolCall covers every ai-kit tool state, including streaming input, approvals, errors and denied calls. The value viewers (JsonTree, KeyValue, ValueTable, DiffView, TerminalOutput) and ToolValue, which picks one from the shape of the value, show inputs and outputs. ToolViewsProvider sets the icon, title, summary and input and output rendering for each tool, and ToolTrace renders ai-kit tool calls with those views. A code view highlights by the file extension of the call's `path`, `file_path` or `filename` input, and `language` can be a function that picks it for each call.
+
+### Patch Changes
+
+- 8e43c3f: Markdown: the copy button on a code block without a language floats over the code again instead of taking up a row above it. The block keeps CodeBlock's `data-slot="code-block"` and is marked with `data-markdown="code"` instead of `data-slot="markdown-code"`.
+
 ## 0.3.0
 
 ### Minor Changes
