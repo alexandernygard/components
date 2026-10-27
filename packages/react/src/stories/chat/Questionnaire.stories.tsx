@@ -21,7 +21,7 @@ import {
 import { Toaster, toast } from "@/components/ui/sonner"
 
 const meta = {
-  title: "Components/Questionnaire",
+  title: "Chat/Questionnaire",
   parameters: { layout: "padded" },
 } satisfies Meta
 

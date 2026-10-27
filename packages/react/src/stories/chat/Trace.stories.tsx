@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/trace"
 
 const meta = {
-  title: "Components/Trace",
+  title: "Chat/Trace",
   parameters: { layout: "padded" },
 } satisfies Meta
 

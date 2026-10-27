@@ -4,14 +4,39 @@
     {
       "name": "storybook",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@alexandernygard/components", "storybook", "--no-open"],
+      "runtimeArgs": [
+        "--filter",
+        "@alexandernygard/components",
+        "storybook",
+        "--no-open"
+      ],
       "port": 6006
     },
     {
       "name": "storybook-svelte",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@alexandernygard/components-svelte", "storybook", "--no-open"],
+      "runtimeArgs": [
+        "--filter",
+        "@alexandernygard/components-svelte",
+        "storybook",
+        "--no-open"
+      ],
       "port": 6007
+    },
+    {
+      "name": "storybook-alt",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "--filter",
+        "@alexandernygard/components",
+        "exec",
+        "storybook",
+        "dev",
+        "-p",
+        "6016",
+        "--no-open"
+      ],
+      "port": 6016
     }
   ]
 }

@@ -39,7 +39,7 @@ import {
 import { TraceDescription, TraceIcon, TraceTitle } from "@/components/ui/trace"
 
 const meta = {
-  title: "Components/Tool call",
+  title: "Chat/Tool call",
   parameters: { layout: "padded" },
 } satisfies Meta
 

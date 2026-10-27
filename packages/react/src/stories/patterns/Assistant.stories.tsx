@@ -1,16 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import * as React from "react"
-import { ArrowUpIcon, PaperclipIcon, SearchIcon, SparklesIcon } from "lucide-react"
+import { SearchIcon, SparklesIcon } from "lucide-react"
 
 import { Bubble, BubbleContent } from "@/components/ui/bubble"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupTextarea,
-} from "@/components/ui/input-group"
 import { Marker, MarkerContent, MarkerIcon } from "@/components/ui/marker"
 import { Message, MessageContent } from "@/components/ui/message"
 import {
@@ -21,6 +15,14 @@ import {
   MessageScrollerProvider,
   MessageScrollerViewport,
 } from "@/components/ui/message-scroller"
+import {
+  PromptInput,
+  PromptInputAttachButton,
+  PromptInputFooter,
+  PromptInputSpacer,
+  PromptInputSubmit,
+  PromptInputTextarea,
+} from "@/components/ui/prompt-input"
 import { Spinner } from "@/components/ui/spinner"
 import {
   ToolTrace,
@@ -85,15 +87,11 @@ const seed: Msg[] = [
 export const Chat: Story = {
   render: function Render() {
     const [messages, setMessages] = React.useState(seed)
-    const [draft, setDraft] = React.useState("")
     const [thinking, setThinking] = React.useState(false)
 
-    function send(e: React.FormEvent) {
-      e.preventDefault()
-      if (!draft.trim()) return
+    function send(text: string) {
       const id = String(messages.length + 1)
-      setMessages((m) => [...m, { id, role: "user", text: draft }])
-      setDraft("")
+      setMessages((m) => [...m, { id, role: "user", text }])
       setThinking(true)
       setTimeout(() => {
         setThinking(false)
@@ -149,34 +147,14 @@ export const Chat: Story = {
           </ToolViewsProvider>
         </CardContent>
         <CardFooter className="border-t">
-          <form onSubmit={send} className="w-full">
-            <InputGroup>
-              <InputGroupTextarea
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) send(e)
-                }}
-                placeholder="Ask anything about your budget"
-                className="min-h-12"
-              />
-              <InputGroupAddon align="block-end">
-                <InputGroupButton size="icon-xs" variant="ghost" aria-label="Attach a file">
-                  <PaperclipIcon />
-                </InputGroupButton>
-                <InputGroupButton
-                  type="submit"
-                  size="icon-xs"
-                  variant="default"
-                  className="ml-auto rounded-full"
-                  aria-label="Send"
-                  disabled={!draft.trim()}
-                >
-                  <ArrowUpIcon />
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
+          <PromptInput status={thinking ? "submitted" : "idle"} onSubmit={({ text }) => send(text)}>
+            <PromptInputTextarea placeholder="Ask anything about your budget" aria-label="Message" />
+            <PromptInputFooter>
+              <PromptInputAttachButton tooltip="Attach a file" />
+              <PromptInputSpacer />
+              <PromptInputSubmit />
+            </PromptInputFooter>
+          </PromptInput>
         </CardFooter>
       </Card>
     )

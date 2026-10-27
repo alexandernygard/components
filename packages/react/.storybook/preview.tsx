@@ -15,7 +15,7 @@ const preview: Preview = {
     a11y: { test: "todo" },
     options: {
       storySort: {
-        order: ["Introduction", "Foundations", "Components", "Patterns"],
+        order: ["Introduction", "Foundations", "Components", "Chat", ["Conversation", "Composer", "Composer controls", "Messages", "*"], "Patterns"],
       },
     },
   },
