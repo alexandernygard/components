@@ -191,7 +191,7 @@ function MarkdownCode({ code, language }: { code: string; language: string }) {
   const lines = useHighlightedCode(code, language)
 
   return (
-    <CodeBlock data-slot="markdown-code" size="sm">
+    <CodeBlock data-markdown="code" size="sm">
       {language ? (
         <CodeBlockHeader>
           <CodeBlockTitle className="font-mono">{language}</CodeBlockTitle>

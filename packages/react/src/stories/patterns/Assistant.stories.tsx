@@ -22,7 +22,13 @@ import {
   MessageScrollerViewport,
 } from "@/components/ui/message-scroller"
 import { Spinner } from "@/components/ui/spinner"
-import { Trace, TraceDescription, TraceIcon, TraceLine, TraceTitle } from "@/components/ui/trace"
+import {
+  ToolTrace,
+  ToolViewsProvider,
+  defineToolView,
+  defineToolViews,
+  type ToolCallData,
+} from "@/components/ui/tool-views"
 
 const meta = {
   title: "Patterns/Assistant",
@@ -32,14 +38,40 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-type Msg = { id: string; role: "user" | "assistant"; text: string; tool?: string }
+type Msg = { id: string; role: "user" | "assistant"; text: string; tools?: ToolCallData[] }
+
+const views = defineToolViews({
+  project_savings: defineToolView<
+    { saved: number; monthly: number; target: number },
+    { month: string; balance: number }[]
+  >({
+    icon: SearchIcon,
+    title: "Ran the savings projection",
+    summary: (output) => `reached ${output[output.length - 1].month}`,
+    input: "keyvalue",
+    output: "table",
+  }),
+})
 
 const seed: Msg[] = [
   { id: "1", role: "user", text: "Can I afford a kr 4.2M flat if I keep saving like this?" },
   {
     id: "2",
     role: "assistant",
-    tool: "Ran the savings projection",
+    tools: [
+      {
+        toolCallId: "t1",
+        toolName: "project_savings",
+        state: "output-available",
+        input: { saved: 412000, monthly: 9500, target: 630000 },
+        output: [
+          { month: "2026-12", balance: 431000 },
+          { month: "2027-06", balance: 488000 },
+          { month: "2027-12", balance: 545000 },
+          { month: "2028-05", balance: 630000 },
+        ],
+      },
+    ],
     text: "With kr 412 000 saved and kr 9 500 a month, you reach a 15% deposit (kr 630 000) in May 2028.\n\nA kr 3.57M mortgage at 5.1% over 30 years costs about kr 19 400 a month, which is kr 2 900 more than your rent today.",
   },
   { id: "3", role: "user", text: "What if I put away kr 12 000 instead?" },
@@ -82,47 +114,39 @@ export const Chat: Story = {
           <CardDescription>Answers use your transactions and savings plan.</CardDescription>
         </CardHeader>
         <CardContent className="min-h-0 flex-1 overflow-hidden p-0">
-          <MessageScrollerProvider>
-            <MessageScroller>
-              <MessageScrollerViewport>
-                <MessageScrollerContent className="gap-5 p-(--card-spacing)">
-                  {messages.map((m) => (
-                    <MessageScrollerItem key={m.id} messageId={m.id} scrollAnchor={m.role === "user"}>
-                      <Message align={m.role === "user" ? "end" : "start"}>
-                        <MessageContent>
-                          {m.tool && (
-                            <Trace>
-                              <TraceLine>
-                                <TraceIcon>
-                                  <SearchIcon />
-                                </TraceIcon>
-                                <TraceTitle>{m.tool}</TraceTitle>
-                                <TraceDescription>0.4 s</TraceDescription>
-                              </TraceLine>
-                            </Trace>
-                          )}
-                          <Bubble variant={m.role === "user" ? "default" : "ghost"}>
-                            <BubbleContent className="whitespace-pre-wrap">{m.text}</BubbleContent>
-                          </Bubble>
-                        </MessageContent>
-                      </Message>
-                    </MessageScrollerItem>
-                  ))}
-                  {thinking && (
-                    <MessageScrollerItem scrollAnchor={false}>
-                      <Marker role="status">
-                        <MarkerIcon>
-                          <Spinner />
-                        </MarkerIcon>
-                        <MarkerContent className="shimmer">Thinking</MarkerContent>
-                      </Marker>
-                    </MessageScrollerItem>
-                  )}
-                </MessageScrollerContent>
-              </MessageScrollerViewport>
-              <MessageScrollerButton />
-            </MessageScroller>
-          </MessageScrollerProvider>
+          <ToolViewsProvider views={views}>
+            <MessageScrollerProvider>
+              <MessageScroller>
+                <MessageScrollerViewport>
+                  <MessageScrollerContent className="gap-5 p-(--card-spacing)">
+                    {messages.map((m) => (
+                      <MessageScrollerItem key={m.id} messageId={m.id} scrollAnchor={m.role === "user"}>
+                        <Message align={m.role === "user" ? "end" : "start"}>
+                          <MessageContent>
+                            {m.tools && <ToolTrace tools={m.tools} />}
+                            <Bubble variant={m.role === "user" ? "default" : "ghost"}>
+                              <BubbleContent className="whitespace-pre-wrap">{m.text}</BubbleContent>
+                            </Bubble>
+                          </MessageContent>
+                        </Message>
+                      </MessageScrollerItem>
+                    ))}
+                    {thinking && (
+                      <MessageScrollerItem scrollAnchor={false}>
+                        <Marker role="status">
+                          <MarkerIcon>
+                            <Spinner />
+                          </MarkerIcon>
+                          <MarkerContent className="shimmer">Thinking</MarkerContent>
+                        </Marker>
+                      </MessageScrollerItem>
+                    )}
+                  </MessageScrollerContent>
+                </MessageScrollerViewport>
+                <MessageScrollerButton />
+              </MessageScroller>
+            </MessageScrollerProvider>
+          </ToolViewsProvider>
         </CardContent>
         <CardFooter className="border-t">
           <form onSubmit={send} className="w-full">

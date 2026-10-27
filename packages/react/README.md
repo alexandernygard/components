@@ -51,9 +51,9 @@ To override a token in an app:
 
 ## What's in it
 
-Accordion, Alert, Alert dialog, Aspect ratio, Attachment, Avatar, Badge, Breadcrumb, Bubble, Button, Button group, Calendar, Card, Carousel, Chart, Checkbox, Code block, Collapsible, Combobox, Command, Context menu, Dialog, Direction, Drawer, Dropdown menu, Empty, Field, Hover card, Illustration, Input, Input group, Input OTP, Item, Kbd, Label, Marker, Menubar, Message, Message scroller, Native select, Navigation menu, Pagination, Popover, Progress, Questionnaire, Radio group, Resizable, Scroll area, Select, Separator, Sheet, Sidebar, Skeleton, Slider, Sonner (toasts), Spinner, Switch, Table, Tabs, Textarea, Toggle, Toggle group, Tooltip, Trace.
+Accordion, Alert, Alert dialog, Aspect ratio, Attachment, Avatar, Badge, Breadcrumb, Bubble, Button, Button group, Calendar, Card, Carousel, Chart, Checkbox, Code block, Collapsible, Combobox, Command, Context menu, Dialog, Direction, Drawer, Dropdown menu, Empty, Field, Hover card, Illustration, Input, Input group, Input OTP, Item, Kbd, Label, Marker, Menubar, Message, Message scroller, Native select, Navigation menu, Pagination, Popover, Progress, Questionnaire, Radio group, Resizable, Scroll area, Select, Separator, Sheet, Sidebar, Skeleton, Slider, Sonner (toasts), Spinner, Switch, Table, Tabs, Textarea, Toggle, Toggle group, Tool call, Tool value, Tool views, Tooltip, Trace.
 
-Bubble, Message, Message scroller, Marker, Attachment, Trace, Code block and Questionnaire cover assistant and chat interfaces.
+Bubble, Message, Message scroller, Marker, Attachment, Trace, Tool call, Code block and Questionnaire cover assistant and chat interfaces. `ToolViewsProvider` sets how each tool's input and output are shown, and `ToolTrace` renders tool calls from @alexandernygard/ai-kit with those views.
 
 ## Develop
 

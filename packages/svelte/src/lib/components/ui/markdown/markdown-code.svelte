@@ -10,7 +10,7 @@
 	);
 </script>
 
-<CodeBlock.Root data-slot="markdown-code" size="sm">
+<CodeBlock.Root data-markdown="code" size="sm">
 	{#if language}
 		<CodeBlock.Header>
 			<CodeBlock.Title class="font-mono">{language}</CodeBlock.Title>
